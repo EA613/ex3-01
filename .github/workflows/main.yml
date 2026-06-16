@@ -28,3 +28,11 @@ jobs:
         context: .
         push: true
         tags: ${{ secrets.DOCKER_USERNAME }}/express-app:latest  # replaced beermapping:latest
+
+  # This section recommended by Google AI LLM to ensure changes get applied to Render version as well.
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Render Deployment
+        run: curl -fS -X POST "${{ secrets.RENDER_DEPLOY_HOOK }}&clearCache=do"
